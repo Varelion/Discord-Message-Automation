@@ -1,4 +1,4 @@
-// THIS ALTERNATE SCRIPT IS MEANT TO BE AUTOMATED WITH `crontab -e`; if you want one to be used with node, refer to the last one.
+// THIS ALTERNATE SCRIPT IS MEANT TO BE AUTOMATED WITH `crontab -e`; if you want one to be used with node, refer to the other '[...]discord.js' file.
 
 const winston = require('winston');
 const logger = winston.createLogger({
