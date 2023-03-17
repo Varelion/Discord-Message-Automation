@@ -2,14 +2,15 @@
 //#region The modular parts of the code
 // --------------------------
 // To get the the variables for 'theChannel', log into discord on chrome or firefox's browsers, and go to where you want your message to be sent.
-// Then open up your developer console. Go to network. Send your message. Then, look into your developer console for 'message'. 
+// Then open up your developer console. Go to network. Send your message. Then, look into your developer console for 'message'.
 // Under General Headers you'll see 'Request URL',  match the number missing from const url = `https://discord.com/api/v9/channels/${theChannel}/messages`;
 // once you've entered the data into 'the channel, scroll down to 'REQUEST HEADERS', and 'authorization' will be what you put into the 'const myAuthorization' variable.
-const theChannel = '';
-const myAuthorization = '';
+const theChannel = '907451784656736346';
+const myAuthorization =
+  'MzYzMjcxNDU0MjM1ODIwMDMz.GWyWw9.gQuSi0yBFD2z1uyal0zBRxkaRuKxvf0p-y4op8';
 //#endregion The modular parts of the code
 
-export function sendMessageToChannel(message) {
+function sendMessageToChannel(message) {
   const url = `https://discord.com/api/v9/channels/${theChannel}/messages`;
   const data = {
     content: message,
@@ -31,22 +32,26 @@ export function sendMessageToChannel(message) {
 // --------------------------
 //#region The commands you will be sending to the server
 // --------------------------
-const first_Message = '';
-const second_Message = '';
+const first_Message = '!job performance';
+const second_Message = '!gamble 1000';
 //#endregion The commands you will be sending to the server
 
-let minutes = 0;
+let minutes = 96;
+let timesRan = 0;
 const func = () => {
   setInterval(function () {
     minutes++;
-    console.log(`it has been ${minutes} minutes`);
+    console.log(`it has been ${minutes} minutes; iteration ${timesRan}`);
     // the thing happens
     if (minutes >= 481) {
-      console.log('minutes');
+      ++timesRan;
+      console.log(`\n***\nCode has executed ${timesRan} times\n***`);
 
-      setTimeout(() => sendMessageToChannel(first_Message), 534);
+      setTimeout(() => sendMessageToChannel(second_Message), 534);
 
-      setTimeout(() => sendMessageToChannel(second_Message), 0);
+      setTimeout(() => sendMessageToChannel(first_Message), 0);
+      console.log(`\n***\nCode has executed ${timesRan} times\n***`);
+
       minutes = 0;
     }
   }, 60000);
