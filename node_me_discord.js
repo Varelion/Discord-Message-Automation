@@ -5,9 +5,13 @@
 // Then open up your developer console. Go to network. Send your message. Then, look into your developer console for 'message'.
 // Under General Headers you'll see 'Request URL',  match the number missing from const url = `https://discord.com/api/v9/channels/${theChannel}/messages`;
 // once you've entered the data into 'the channel, scroll down to 'REQUEST HEADERS', and 'authorization' will be what you put into the 'const myAuthorization' variable.
+const nodemailer = require('nodemailer');
 const theChannel = '907451784656736346';
 const myAuthorization =
-  'MzYzMjcxNDU0MjM1ODIwMDMz.GWyWw9.gQuSi0yBFD2z1uyal0zBRxkaRuKxvf0p-y4op8';
+  'MzYzMjcxNDU0MjM1ODIwMDMz.GaOOH9.qdCTf5WroTLOyCsNRS3Xpy0TENYnZHhP4STnk0';
+let minutes = 163;
+let timesRan = 1;
+let timeExecuted = new Date('March 19 2023 ');
 //#endregion The modular parts of the code
 
 function sendMessageToChannel(message) {
@@ -27,6 +31,53 @@ function sendMessageToChannel(message) {
     .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((error) => console.error(error));
+
+  let jsonData = JSON.stringify(data);
+  let errorData = 'None this time';
+  if (error) {
+    let errorData = JSON.stringify(error);
+  }
+  if (!jsonData.content) {
+    // sender and recipient email addresses
+
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'business.8508@gmail.com',
+        pass: 'nhotuuabnopufdyd',
+      },
+    });
+
+    const myEmail = 'business.8508@gmail.com';
+    const recipientEmails = ['ighormisc@gmail.com', 'business.8508@gmail.com'];
+    let senderEmail = myEmail;
+    // message content and subject line
+    const subjectLine = `Gamble Bot: ${senderEmail}`;
+
+    // setup email data with unicode symbols
+    let mailOptions = {
+      from: myEmail,
+      to: recipientEmails.join(','),
+      subject: subjectLine,
+      text: message,
+      html: `<h2>DISCORD BOT FAILED</h2>
+          <br>
+          <p>jsonData: ${jsonData} </p>
+                    <br>
+          <p>jsonData.content: ${jsonData.content} </p>
+                            <br>
+          <p>errorData: ${errorData} </p>`,
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error, 'sending mail');
+      } else {
+        console.log(`Email sent: ${info.response}`);
+      }
+    });
+  }
 }
 
 // --------------------------
@@ -36,15 +87,19 @@ const first_Message = '!job performance';
 const second_Message = '!gamble 1000';
 //#endregion The commands you will be sending to the server
 
-let minutes = 96;
-let timesRan = 0;
 const func = () => {
   setInterval(function () {
     minutes++;
-    console.log(`it has been ${minutes} minutes; iteration ${timesRan}`);
+    let nowOClock = new Date();
+    console.log(
+      `Minutes: ${minutes}, now is: ${nowOClock}
+      \n Times ran: ${timesRan}
+      \n Last ran at: ${timeExecuted}`
+    );
     // the thing happens
     if (minutes >= 481) {
       ++timesRan;
+      timeExecuted = new Date();
       console.log(`\n***\nCode has executed ${timesRan} times\n***`);
 
       setTimeout(() => sendMessageToChannel(second_Message), 534);
