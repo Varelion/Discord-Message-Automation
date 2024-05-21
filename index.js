@@ -1,4 +1,16 @@
 const sendEmail = require('./FUNCTIONS/send_mail');
 
-// Call the sendEmail function with your data
+
+
+
+
+
+
+
+
+
+// --------------------------
+//#region Send Email
+// --------------------------
 sendEmail('Your JSON data', 'Your error data');
+//#endregion Send Email//
