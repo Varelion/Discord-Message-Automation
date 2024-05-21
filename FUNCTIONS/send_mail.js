@@ -21,6 +21,8 @@ const sendEmail = async (jsonData, errorData) => {
 		text: EMAIL_BODY,
 		html: `<h2>DISCORD BOT FAILED</h2>
            <br>
+		   Message: ${EMAIL_BODY}
+		   <br>
            <p>jsonData: ${jsonData}</p>
            <br>
            <p>errorData: ${errorData}</p>`,
