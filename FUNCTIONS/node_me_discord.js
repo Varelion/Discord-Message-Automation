@@ -3,7 +3,7 @@ const { log } = require('console');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv').config();
-const databasePath = path.join(__dirname, 'database.json');
+const databasePath = path.join(__dirname, '../database.json');
 
 // Get the required variables from the environment
 const {
@@ -115,9 +115,9 @@ function sendMessages() {
 
 	// Prepare the message
 	console.log(`${MESSAGE_SENT_TO_DISCORD_CHANNEL}\n
-	Sent at: ${times_sent}\n
-	Sent before at: ${stat_helper.time_last_sent}\n
-	Times sent: ${stat_helper.times_sent}`)
+	MessageBot: Sent at: ${stat_helper.time_now_sent}\n
+	MessageBot: Sent before at: ${stat_helper.time_last_sent}\n
+	MessageBot: Times sent: ${stat_helper.times_sent}`)
 	// Send the message
 	sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL);
 }

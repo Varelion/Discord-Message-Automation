@@ -1,5 +1,5 @@
 const sendEmail = require('./FUNCTIONS/send_mail');
-const sendMessages = require('./node_me_discord')
+const sendMessages = require('./FUNCTIONS/node_me_discord')
 const dotenv = require('dotenv').config();
 const { MILISECONDS_IN_ONE_HOUR, HOW_MANY_HOURS_TO_SEND } = process.env;
 
