@@ -3,12 +3,12 @@ const sendMessages = require('./node_me_discord')
 const dotenv = require('dotenv').config();
 const { MILISECONDS_IN_ONE_HOUR, HOW_MANY_HOURS_TO_SEND } = process.env;
 
-setInterval(sendMessages, MILISECONDS_IN_ONE_HOUR * HOW_MANY_HOURS_TO_SEND);
 
 
 // --------------------------
 //#region Send Discord Message To Channel @ Time
 // --------------------------
+setInterval(sendMessages, MILISECONDS_IN_ONE_HOUR * HOW_MANY_HOURS_TO_SEND);
 
 //#endregion Send Discord Message To Channel @ Time
 
