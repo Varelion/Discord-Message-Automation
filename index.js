@@ -5,6 +5,12 @@ const { MILISECONDS_IN_ONE_HOUR, HOW_MANY_HOURS_TO_SEND } = process.env;
 
 
 
+let FIRST_TIME = true //WE are doing this after const, because we need to change FIRST_TIME;
+console.log(FIRST_TIME)
+FIRST_TIME == true ? sendMessages() : null;
+
+FIRST_TIME = false;
+
 // --------------------------
 //#region Send Discord Message To Channel @ Time
 // --------------------------
