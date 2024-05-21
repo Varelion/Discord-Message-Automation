@@ -2,14 +2,21 @@
 const dotenv = require('dotenv').config();
 
 // Get the required variables from the environment
-const { THE_CHANNEL, MY_AUTHORIZATION_TOKEN, MESSAGE_SENT_TO_DISCORD_CHANNEL, COOKIE_FROM_HTTP_POST, MILISECONDS_IN_ONE_HOUR, HOW_MANY_HOURS_TO_SEND, MILISECONDS_IN_ONE_SECOND } = process.env; // {... env } deconstructs ALL variables in env
+const {
+	THE_CHANNEL,
+	MY_AUTHORIZATION_TOKEN,
+	MESSAGE_SENT_TO_DISCORD_CHANNEL,
+	COOKIE_FROM_HTTP_POST,
+	MILISECONDS_IN_ONE_HOUR,
+	HOW_MANY_HOURS_TO_SEND,
+	MILISECONDS_IN_ONE_SECOND
+} = process.env;
 
 // Discord Channel ID where the messages will be sent
 const channelId = THE_CHANNEL;
 
 // Authorization token for the Discord API
 const authorization = MY_AUTHORIZATION_TOKEN;
-
 
 // Initialize Stat Helper
 let stat_helper = {
@@ -18,10 +25,9 @@ let stat_helper = {
 	"time_now_sent": 0
 };
 
+console.log("HIT");
 
-// The messages to be sent to the Discord channel
-let MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else = `${MESSAGE_SENT_TO_DISCORD_CHANNEL} last sent: ${stat_helper.time_last_sent}; times sent: ${stat_helper.times_sent}, and finally time now ${stat_helper.time_now_sent}`;
-
+// Function to format date
 function formatDate() {
 	let date = new Date();
 	const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -34,19 +40,11 @@ function formatDate() {
 	return `${month}/${day} @ ${hours}:${minutes}:${seconds}:${milliseconds}`;
 }
 
-
-
-const nowFormatted = formatDate(stat_helper.time_now_sent);
-console.log(nowFormatted); // Example output: "05-21-14-08-51"
-
-
-
-
 // Function to send a message to the Discord channel
 function sendMessageToChannel(message) {
 	const url = `https://discord.com/api/v9/channels/${channelId}/messages`;
 	const data = {
-		content: MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else,
+		content: message,
 		cookie: COOKIE_FROM_HTTP_POST
 	};
 
@@ -59,37 +57,29 @@ function sendMessageToChannel(message) {
 		body: JSON.stringify(data),
 	})
 		.then((response) => response.json())
-		// .then((data) => console.log('Message sent successfully:', data))
 		.catch((error) => console.error('Error sending message:', error));
 }
 
-let FIRST_MESSAGE = true
-
 // Function to send the messages to the Discord channel
 function sendMessages() {
-	// Send the first message immediately
-
+	// Update stat_helper
 	stat_helper.time_last_sent = stat_helper.time_now_sent;
 	stat_helper.time_now_sent = formatDate();
 	stat_helper.times_sent++;
-	MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else = `${MESSAGE_SENT_TO_DISCORD_CHANNEL} last sent: ${stat_helper.time_last_sent}; times sent: ${stat_helper.times_sent}, and finally time now ${stat_helper.time_now_sent}`;
+
+	// Prepare the message
+	let MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else =
+		`${MESSAGE_SENT_TO_DISCORD_CHANNEL} last sent: ${stat_helper.time_last_sent}; times sent: ${stat_helper.times_sent}, and finally time now ${stat_helper.time_now_sent}`;
+
+	// Send the message
 	sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else);
-	console.log(`***
-	***
-	***
-	Logging:
-	***
-	***
-	***
-	`, stat_helper);
-	FIRST_MESSAGE = false
-	// Send the second message after a delay of 250 milliseconds, this is if you have a second
-	// this is if you have a second, separate command to send. If it's just one message, just comment it out.
-	// setTimeout(() => sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else), 250);
 }
 
-// Run the sendMessages function every 8 hours (28800000 milliseconds)
-// setInterval(sendMessages, 28800000);
-FIRST_MESSAGE === true ? sendMessages() : null
+// Run the sendMessages function every X hours
+const interval = MILISECONDS_IN_ONE_HOUR * HOW_MANY_HOURS_TO_SEND;
+setInterval(sendMessages, interval);
 
-setInterval(sendMessages, MILISECONDS_IN_ONE_HOUR * HOW_MANY_HOURS_TO_SEND);
+// Send the first message immediately
+sendMessages();
+
+module.exports = sendMessages;

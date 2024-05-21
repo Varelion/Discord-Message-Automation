@@ -1,10 +1,16 @@
 const sendEmail = require('./FUNCTIONS/send_mail');
+const sendMessages = require('./node_me_discord')
+const dotenv = require('dotenv').config();
+const { MILISECONDS_IN_ONE_HOUR, HOW_MANY_HOURS_TO_SEND } = process.env;
+
+setInterval(sendMessages, MILISECONDS_IN_ONE_HOUR * HOW_MANY_HOURS_TO_SEND);
 
 
+// --------------------------
+//#region Send Discord Message To Channel @ Time
+// --------------------------
 
-
-
-
+//#endregion Send Discord Message To Channel @ Time
 
 
 
@@ -12,5 +18,5 @@ const sendEmail = require('./FUNCTIONS/send_mail');
 // --------------------------
 //#region Send Email
 // --------------------------
-sendEmail('Your JSON data', 'Your error data');
+// sendEmail('Your JSON data', 'Your error data');
 //#endregion Send Email//
