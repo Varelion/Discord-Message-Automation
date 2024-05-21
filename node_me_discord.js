@@ -20,7 +20,25 @@ let stat_helper = {
 
 
 // The messages to be sent to the Discord channel
-const MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else = `${MESSAGE_SENT_TO_DISCORD_CHANNEL} last sent: ${stat_helper.time_last_sent}; times sent: ${stat_helper.times_sent}, and finally time now ${stat_helper.time_now_sent}`;
+let MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else = `${MESSAGE_SENT_TO_DISCORD_CHANNEL} last sent: ${stat_helper.time_last_sent}; times sent: ${stat_helper.times_sent}, and finally time now ${stat_helper.time_now_sent}`;
+
+function formatDate() {
+	let date = new Date();
+	const month = (date.getMonth() + 1).toString().padStart(2, '0');
+	const day = date.getDate().toString().padStart(2, '0');
+	const hours = date.getHours().toString().padStart(2, '0');
+	const minutes = date.getMinutes().toString().padStart(2, '0');
+	const seconds = date.getSeconds().toString().padStart(2, '0');
+	const milliseconds = date.getMilliseconds().toString().padStart(2, '0');
+
+	return `${month}/${day} @ ${hours}:${minutes}:${seconds}:${milliseconds}`;
+}
+
+
+
+const nowFormatted = formatDate(stat_helper.time_now_sent);
+console.log(nowFormatted); // Example output: "05-21-14-08-51"
+
 
 
 
@@ -41,7 +59,7 @@ function sendMessageToChannel(message) {
 		body: JSON.stringify(data),
 	})
 		.then((response) => response.json())
-		.then((data) => console.log('Message sent successfully:', data))
+		// .then((data) => console.log('Message sent successfully:', data))
 		.catch((error) => console.error('Error sending message:', error));
 }
 
@@ -50,15 +68,24 @@ let FIRST_MESSAGE = true
 // Function to send the messages to the Discord channel
 function sendMessages() {
 	// Send the first message immediately
-	stat_helper.time_last_sent = stat_helper.time_last_sent;
-	stat_helper.time_now_sent = new Date();
-	stat_helper.time_last_sent++;
-	sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else);
 
+	stat_helper.time_last_sent = stat_helper.time_now_sent;
+	stat_helper.time_now_sent = formatDate();
+	stat_helper.times_sent++;
+	MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else = `${MESSAGE_SENT_TO_DISCORD_CHANNEL} last sent: ${stat_helper.time_last_sent}; times sent: ${stat_helper.times_sent}, and finally time now ${stat_helper.time_now_sent}`;
+	sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else);
+	console.log(`***
+	***
+	***
+	Logging:
+	***
+	***
+	***
+	`, stat_helper);
 	FIRST_MESSAGE = false
 	// Send the second message after a delay of 250 milliseconds, this is if you have a second
 	// this is if you have a second, separate command to send. If it's just one message, just comment it out.
-	setTimeout(() => sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else), 250);
+	// setTimeout(() => sendMessageToChannel(MESSAGE_SENT_TO_DISCORD_CHANNEL_plus_anything_else), 250);
 }
 
 // Run the sendMessages function every 8 hours (28800000 milliseconds)
