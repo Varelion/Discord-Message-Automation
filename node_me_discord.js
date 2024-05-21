@@ -5,7 +5,17 @@
 // Then open up your developer console. Go to network. Send your message. Then, look into your developer console for 'message'.
 // Under General Headers you'll see 'Request URL',  match the number missing from const url = `https://discord.com/api/v9/channels/${theChannel}/messages`;
 // once you've entered the data into 'the channel, scroll down to 'REQUEST HEADERS', and 'authorization' will be what you put into the 'const myAuthorization' variable.
-const nodemailer = require('nodemailer');
+const dotenv = require('dotenv').config();
+const { THE_CHANNEL, MY_AUTHORIZATION_TOKEN } = process.env
+let date;
+
+function getDate() {
+	date = new Date();
+}
+
+
+
+console.log(new Date())
 const theChannel = 'channel ID HERE ';
 const myAuthorization =
   'AUTHORIZATION HERE ';
@@ -56,42 +66,8 @@ function sendMessageToChannel(message) {
 
   // sender and recipient email addresses
 
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'YOUR EMAIL HERE @gmail.com',
-      pass: 'YOUR APP PASSWORD HERE',
-    },
-  });
 
-  const myEmail = 'YOUR EMAIL HERE';
-  const recipientEmails = ['TARGET@gmail.com', 'TARGET2@gmail.com'];
-  let senderEmail = myEmail;
-  // message content and subject line
-  const subjectLine = `Gamble Bot: ${senderEmail}`;
 
-  // setup email data with unicode symbols
-  let mailOptions = {
-    from: myEmail,
-    to: recipientEmails.join(','),
-    subject: subjectLine,
-    text: message,
-    html: `<h2>DISCORD BOT FAILED</h2>
-          <br>
-          <p>jsonData: ${dataData} </p>
-                    <br>
-          <p>errorData: ${errorData} </p>`,
-  };
-
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error, 'sending mail');
-    } else {
-      console.log(`Email sent: ${info.response}`);
-    }
-  });
-}
 
 // --------------------------
 //#region The commands you will be sending to the server
